@@ -1,0 +1,28 @@
+psql -h localhost -p 5433 -U aman -d book_social_network
+
+
+
+###Registration####
+curl -v -X POST http://localhost:8088/api/v1/auth/register      -H "Content-Type: application/json"      -d '{
+           "firstname": "Amanuel",
+           "lastname": "Temesgen",
+           "email": "aman@gmail.com",
+           "password": "asdfasdf"
+         }'
+
+
+
+#######Authentication#######
+ curl -v -X POST http://localhost:8088/api/v1/auth/authenticate      -H "Content-Type: application/json"      -d '{                                
+           "email": "aman@gmail.com",
+           "password": "asdfasdf"
+         }'
+
+
+
+
+
+
+###########Activation############
+curl -X GET "http://localhost:8088/api/v1/auth/activate-account?token=147062"
+
