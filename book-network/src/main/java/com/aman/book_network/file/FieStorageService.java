@@ -1,6 +1,10 @@
 package com.aman.book_network.file;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -38,8 +42,16 @@ public class FieStorageService {
         }
 
       final String fileExtension = getFileExtension(sourceFile.getOriginalFilename());
-
-      return null;
+      String targetFilePath=finalUploadPath+File.separator+System.currentTimeMillis()+"."+fileExtension;
+      Path targetPath=Paths.get(targetFilePath);
+      try{
+           Files.write(targetPath,sourceFile.getBytes());
+           log.info("File saved to "+targetFilePath);
+      }
+      catch(IOException ex){
+          log.error("File was not saved",ex);
+      }
+      return targetFilePath;
     }
     private String getFileExtension(String fileName) {
         if(fileName==null || fileName.isEmpty()){
