@@ -1,0 +1,41 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/book_social_network
+    username: aman
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 2525
+    username: efcea94d1ac55d
+    password: 16dc59a7d3003b
+    protocol: smtp
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
+application:
+  security:
+    jwt:
+      secret-key: your-secret-key
+      expiration: 8640000
+
+  mailing:
+    frontend:
+      activation-url: http://localhost:4200/activate-account
+
+  file:
+    upload:
+      photos-output-path: ./uploads
+
+server:
+  port: 8088
