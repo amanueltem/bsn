@@ -7,9 +7,14 @@ import com.aman.book_network.user.User;
 import com.aman.book_network.exception.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -28,7 +33,7 @@ public class FeedbackService {
             throw new OperationNotPermittedException("You cannot give feedback for archived or non-sharable books.");
         }
 
-        User user = (User) authentication.getPrincipal();
+        User user = (User) connectedUser.getPrincipal();
 
         if (Objects.equals(book.getOwner().getId(), user.getId())) {
             throw new OperationNotPermittedException("You cannot give feedback to your own book.");
@@ -41,10 +46,23 @@ public class FeedbackService {
 	public PageResponse<FeedbackResponse> findAllFeedbacksByBook(Integer bookId,
 	                                                               int page,
 																   int size,
-																   Autehtication connectedUser){
+																   Authentication connectedUser){
 		Pageable pageable= PageRequest.of(page,size);
-		User user=((user)connectedUser.getPrincipal());
+		User user=((User)connectedUser.getPrincipal());
 		Page<Feedback> feedbacks=feedbackRepository.findAllByBookId(bookId,pageable);
-		return null;															   
+        List<FeedbackResponse> feedbackResponses=feedbacks.stream()
+                                                 .map(f->feedbackMapper
+                                                        .toFeedbackResponse(f,user.getId()))
+                                                        .toList();
+
+		return new PageResponse<>(
+            feedbackResponses,
+            feedbacks.getNumber(),
+            feedbacks.getSize(),
+            feedbacks.getTotalElements(),
+            feedbacks.getTotalPages(),
+            feedbacks.isFirst(),
+            feedbacks.isLast()
+        );															   
 																   }
 }

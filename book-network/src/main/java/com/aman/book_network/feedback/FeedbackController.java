@@ -30,5 +30,7 @@ public class FeedbackController {
 	@RequestParam(name="size", defaultValue="10",required=false)int size,
 	Authentication connectedUser
 	){
-		return ResponseEntity.ok(service.findAllFeedbackByBook(bookId,page,size,connectedUser);
+		return ResponseEntity.ok(service.findAllFeedbacksByBook(bookId,page,size,connectedUser));
+}
+
 }
