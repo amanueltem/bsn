@@ -23,7 +23,6 @@ public class FieStorageService {
      private String fieUploadPath;
     public String saveFile(
         @Nonnull MultipartFile sourceFile,
-        @Nonnull Book book,
         @Nonnull Integer userId) {
       final String fileUploadSubPath="users"+File.separator+userId;
      return uploadFile(sourceFile,fileUploadSubPath);
