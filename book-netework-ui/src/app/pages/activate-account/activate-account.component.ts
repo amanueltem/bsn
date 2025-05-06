@@ -10,6 +10,7 @@ import { AuthenticationService } from '../../services/services';
 })
 export class ActivateAccountComponent {
 
+
    message:string = '';
    isOkay:boolean = true;
    submitted: boolean = false;
@@ -21,6 +22,26 @@ export class ActivateAccountComponent {
    }
 
    onCodeCompleted(toekn: string) {
-      
+      this.confirmAccount(toekn)
     }
+  confirmAccount(token: string) {
+    this.authService.confirm(
+      {
+        token
+      }
+    ).subscribe(
+      {
+        next: ()=>{
+          this.message="Your account has been successfuly activated.";
+          this.submitted=true;
+        },
+        error: ()=>{
+
+        }
+      }
+    )
+  }
+    redirectToLogin() {
+      this.router.navigate(["login"])
+      }
 }
